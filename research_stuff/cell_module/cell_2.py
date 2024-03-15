@@ -3,9 +3,8 @@ import logging
 import cv2
 import numpy as np
 from PIL import Image
-from tesserocr._tesserocr import PyTessBaseAPI
 
-# from tesserocr import PyTessBaseAPI
+from tesserocr import PyTessBaseAPI
 
 import cell_module.detect_table as dt
 import cell_module.helper_function as helper
@@ -97,7 +96,7 @@ def preprocess_image(image_original: np.ndarray) -> np.ndarray:
 		if angle is not None and abs(angle) > 90:
 			angle = 180 - abs(angle)
 		if (angle is None or abs(angle) <= 10) \
-			and ((0.4 * h_thresh < y1 < 0.6 * h_thresh) or (0.4 * h_thresh < y2 < 0.6 * h_thresh)):
+				and ((0.4 * h_thresh < y1 < 0.6 * h_thresh) or (0.4 * h_thresh < y2 < 0.6 * h_thresh)):
 			cv2.line(thresh2, (x1, y1), (x2, y2), (255, 255, 255), 2)
 
 	# remove vertical lines from image
@@ -106,7 +105,7 @@ def preprocess_image(image_original: np.ndarray) -> np.ndarray:
 		if angle is not None and abs(angle) > 90:
 			angle = 180 - abs(angle)
 		if (angle is None or abs(angle) >= 80) \
-			and ((0.3 * w_thresh < x1 < 0.7 * w_thresh) or (0.0 * w_thresh < x2 < 0.7 * w_thresh)):
+				and ((0.3 * w_thresh < x1 < 0.7 * w_thresh) or (0.0 * w_thresh < x2 < 0.7 * w_thresh)):
 			cv2.line(thresh2, (x1, y1), (x2, y2), (255, 255, 255), 2)
 
 	blurred = cv2.GaussianBlur(thresh2, (1, 1), 0)
