@@ -25,7 +25,7 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        apt-get install tesseract-ocr libtesseract-dev libleptonica-dev pkg-config
+        sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev pkg-config
         cd research_stuff
         python -m pip install --upgrade pip
         pip install -r requirements.txt
