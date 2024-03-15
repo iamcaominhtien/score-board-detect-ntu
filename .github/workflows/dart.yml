@@ -33,23 +33,23 @@ jobs:
     - run: |
         cd score_board_detect_app
         flutter pub get
-    - name: Check if SECRET_PASSPHRASE is loaded
-      run: |
-        if [[ -z "${{ secrets.SECRET_PASSPHRASE }}" ]]; then
-          echo "SECRET_PASSPHRASE is not loaded"
-          exit 1
-        else
-          echo "SECRET_PASSPHRASE is loaded successfully"
-        fi
-#    - name: Build
+#    - name: Check if SECRET_PASSPHRASE is loaded
 #      run: |
-#        cd score_board_detect_app
-#        gpg --quiet --batch --yes --decrypt --passphrase=${{secrets.SECRET_PASSPHRASE}} \
-#        --output android/app/google-services.json android/app/google-services.json.gpg
-#        flutter build appbundle
-#        flutter build apk
-#    - name: Upload
-#      uses: actions/upload-artifact@master
-#      with:
-#        name: apk-build
-#        path: build/app/outputs/bundle/release
+#        if [[ -z "${{ secrets.SECRET_PASSPHRASE }}" ]]; then
+#          echo "SECRET_PASSPHRASE is not loaded"
+#          exit 1
+#        else
+#          echo "SECRET_PASSPHRASE is loaded successfully"
+#        fi
+    - name: Build
+      run: |
+        cd score_board_detect_app
+        gpg --quiet --batch --yes --decrypt --passphrase="${{secrets.SECRET_PASSPHRASE}}" \
+        --output android/app/google-services.json android/app/google-services.json.gpg
+        flutter build appbundle
+        flutter build apk
+    - name: Upload
+      uses: actions/upload-artifact@master
+      with:
+        name: apk-build
+        path: build/app/outputs/bundle/release
