@@ -25,11 +25,10 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        apt-get install tesseract-ocr libtesseract-dev libleptonica-dev pkg-config
         cd research_stuff
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install tesserocr==2.6.0
+        pip install dist/tesserocr-2.6.0-cp39-cp39-win_amd64.whl
     - name: Test with pytest
       run: |
         pytest
