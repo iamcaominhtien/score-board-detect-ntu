@@ -28,7 +28,9 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
           channel: 'stable'
-    - run: flutter pub get
+    - run: |
+        cd score_board_detect_ntu
+        flutter pub get
     - name: Build
       run: |
         cd score_board_detect_ntu
