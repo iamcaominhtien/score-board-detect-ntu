@@ -3,7 +3,7 @@ from itertools import product
 import cv2
 import numpy as np
 
-from cell_module import helper_function as helper
+from my_utils.line_helper import find_intersection_of_2_lines
 
 
 def cut_table_row_by_row(horizontal_lines, vertical_lines, img, index_of_image=1):
@@ -40,7 +40,7 @@ def cut_table_row_by_row(horizontal_lines, vertical_lines, img, index_of_image=1
 				[
 					intersection
 					for h_l, v_l in product([h_line1, h_line2], [v_line1, v_line2])
-					if (intersection := helper.find_intersection_of_2_lines(h_l, v_l)) is not None
+					if (intersection := find_intersection_of_2_lines(h_l, v_l)) is not None
 				]
 			)
 
