@@ -7,10 +7,11 @@ from PIL import Image
 from tesserocr import PyTessBaseAPI
 
 import cell_module.detect_table as dt
-import cell_module.helper_function as helper
+# import cell_module.helper_function as helper
 from cell_module.detect_table.detect_table import DetectTable
 from my_utils.image_helper import get_digits_only, get_grayscale, \
 	mark_the_weight, remove_ver_lines, thresholding
+from my_utils.line_helper import get_angle
 from my_utils.path_helper import path_tessdata
 
 
@@ -92,7 +93,7 @@ def preprocess_image(image_original: np.ndarray) -> np.ndarray:
 	# remove horizontal lines from image
 	h_thresh, w_thresh = thresh2.shape
 	for x1, y1, x2, y2 in detect_table_instance.horizontal_lines:
-		angle = helper.get_angle((x1, y1, x2, y2), False)
+		angle = get_angle((x1, y1, x2, y2), False)
 		if angle is not None and abs(angle) > 90:
 			angle = 180 - abs(angle)
 		if (angle is None or abs(angle) <= 10) \
@@ -101,7 +102,7 @@ def preprocess_image(image_original: np.ndarray) -> np.ndarray:
 
 	# remove vertical lines from image
 	for x1, y1, x2, y2 in detect_table_instance.vertical_lines:
-		angle = helper.get_angle((x1, y1, x2, y2), False)
+		angle = get_angle((x1, y1, x2, y2), False)
 		if angle is not None and abs(angle) > 90:
 			angle = 180 - abs(angle)
 		if (angle is None or abs(angle) >= 80) \

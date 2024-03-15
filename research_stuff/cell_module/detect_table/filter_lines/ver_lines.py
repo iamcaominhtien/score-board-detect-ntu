@@ -1,7 +1,7 @@
 import numpy as np
 
-from cell_module import helper_function as helper, smooth_line
 from cell_module.smooth_line.smooth_vetical_lines import stretch_vertical_lines
+from my_utils.line_helper import length_of_line, line_slope_intercept
 
 
 def filter_vertical_lines(ver_lines: np.ndarray, horizontal_lines: np.ndarray) -> np.ndarray:
@@ -36,14 +36,14 @@ def filter_vertical_lines(ver_lines: np.ndarray, horizontal_lines: np.ndarray) -
 		# Calculate the average length of the lines
 		d1 = np.average(
 			[
-				helper.length_of_line([x1, y1, x2, y2]),
-				helper.length_of_line([x11, y11, x22, y22])
+				length_of_line([x1, y1, x2, y2]),
+				length_of_line([x11, y11, x22, y22])
 			]
 		)
 		d2 = np.average(
 			[
-				helper.length_of_line([x2, y2, x3, y3]),
-				helper.length_of_line([x22, y22, x33, y33])]
+				length_of_line([x2, y2, x3, y3]),
+				length_of_line([x22, y22, x33, y33])]
 		)
 
 		# Append the absolute value of the ratio of d2 to d1 to the column spaces
@@ -126,8 +126,8 @@ def _find_cel_6_and_7_and_8(
 			x1 = sixth_line[0]
 
 			for line in [horizontal_lines[0], horizontal_lines[-1]]:
-				m, b = helper.line_slope_intercept(line)
-				line_length = helper.length_of_line(line)
+				m, b = line_slope_intercept(line)
+				line_length = length_of_line(line)
 				delta_x_seventh = x1 + line_length * 0.0502
 				delta_x_eighth = delta_x_seventh + line_length * 0.0502
 				delta_x_ninth = delta_x_eighth + line_length * 0.0502
@@ -208,10 +208,10 @@ def _find_cell_1_and_2(
 		# Iterate over the first and last horizontal lines
 		for line in [horizontal_lines[0], horizontal_lines[-1]]:
 			# Calculate the slope and y-intercept of the line
-			m, b = helper.line_slope_intercept(line)
+			m, b = line_slope_intercept(line)
 
 			# Calculate the length of the line
-			line_length = helper.length_of_line(line)
+			line_length = length_of_line(line)
 
 			# Calculate the x-coordinates of the second and third lines
 			delta_x_second = x1 + line_length * 0.048
@@ -236,7 +236,7 @@ def _find_cell_1_and_2(
 
 		# Stretch the vertical lines and add them to the array of lines for cells 1, 2, 3, 6, 7, 8, and 9
 		lines_1_2_3_6_7_8_9 = stretch_vertical_lines(
-			np.array([left_line, second_line, third_line]), left_line[-1]
+			np.array([left_line, second_line, third_line]), int(left_line[-1])
 		)
 
 	# Return the array of lines for cells 1 and 2

@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 
 from cell_module import helper_function as helper
+from my_utils.line_helper import get_angle
 
 
 def get_grayscale(image):
@@ -104,7 +105,7 @@ def remove_ver_lines(image_original):
 		angles = list()
 		for line in lines:
 			# Get the angle of the line.
-			angle = helper.get_angle(line[0], False)
+			angle = get_angle(line[0], False)
 			if angle and abs(angle) > 90:
 				angle = 180 - abs(angle)
 			angles.append(angle)

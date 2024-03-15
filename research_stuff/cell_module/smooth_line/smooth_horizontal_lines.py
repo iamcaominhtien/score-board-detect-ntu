@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
+
 from cell_module import colors, helper_function as helper
+from my_utils.line_helper import length_of_line
 
 
 def merger_horizontal_lines_groups_into_one(groups: np.ndarray) -> np.ndarray:
@@ -181,7 +183,7 @@ def smooth_line_horizontal(line_matrix, test=False):
 		temp_grouped_lines
 	)
 	temp_merge_lines_length = [
-		helper.length_of_line(line) for line in
+		length_of_line(line) for line in
 		temp_merge_lines
 	]
 	analyze_data = helper.analyze_data_to_find_outliers(

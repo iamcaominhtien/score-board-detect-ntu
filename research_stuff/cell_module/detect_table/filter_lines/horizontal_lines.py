@@ -3,6 +3,7 @@ from math import floor
 import numpy as np
 
 from cell_module import helper_function as helper
+from my_utils.line_helper import get_angle
 
 
 def custom_round(number):
@@ -100,7 +101,7 @@ def _remove_outliers(lines: np.ndarray) -> np.ndarray:
 	Returns:
 		numpy.ndarray: The array of lines with outliers removed.
 	"""
-	angles = [helper.get_angle(line, rad=False) for line in lines]
+	angles = [get_angle(line, rad=False) for line in lines]
 	check_outlier = helper.analyze_data_to_find_outliers(angles)
 	median = check_outlier['median']
 	outlier_index = check_outlier['outlier_index']
