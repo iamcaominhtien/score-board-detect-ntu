@@ -29,11 +29,11 @@ jobs:
       with:
           channel: 'stable'
     - run: |
-        cd score_board_detect_ntu
+        cd score_board_detect_app
         flutter pub get
     - name: Build
       run: |
-        cd score_board_detect_ntu
+        cd score_board_detect_app
         gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
         --output android/app/google-services.json android/app/google-services.json.gpg
         flutter build appbundle
