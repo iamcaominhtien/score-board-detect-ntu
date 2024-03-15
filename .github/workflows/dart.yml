@@ -18,6 +18,8 @@ on:
 jobs:
   build_and_deploy:
     name: Build and Deploy
+    env:
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -34,12 +36,10 @@ jobs:
     - name: Build
       run: |
         cd score_board_detect_app
-        gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
+        gpg --quiet --batch --yes --decrypt --passphrase="${{$SECRET_PASSPHRASE}}" \
         --output android/app/google-services.json android/app/google-services.json.gpg
         flutter build appbundle
         flutter build apk
-      env:
-        SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
     - name: Upload
       uses: actions/upload-artifact@master
       with:
