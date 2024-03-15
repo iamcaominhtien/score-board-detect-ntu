@@ -11,7 +11,7 @@ on:
     paths:
       - "score_board_detect_app/**"
   pull_request:
-    branches: [ "flutterapk-cicd" ]
+    branches: [ "main" ]
     paths:
       - "score_board_detect_app/**"
 
