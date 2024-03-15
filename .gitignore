@@ -136,7 +136,6 @@ app.*.map.json
 
 
 # Researched stuff
-test
 research_stuff/Images/row_cut_example/*
 /research_stuff/.venv_sbd/
 
