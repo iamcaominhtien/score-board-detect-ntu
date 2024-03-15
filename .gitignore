@@ -143,4 +143,9 @@ research_stuff/Images/row_cut_example/*
 score_board_detect_api
 
 # score_board_detect_app
-score_board_detect_app
+score_board_detect_app/build
+score_board_detect_app/web
+score_board_detect_app/windows
+score_board_detect_app/test
+score_board_detect_app/android/app/google-services.json
+/score_board_detect_app/ios/Runner/GoogleService-Info.plist
