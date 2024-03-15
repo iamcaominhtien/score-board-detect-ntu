@@ -9,6 +9,7 @@ from cell_module.detect_table.cut_table_row_by_row import cut_table_row_by_row
 from cell_module.detect_table.detect_table import DetectTable
 from cell_module.detect_table.filter_lines.horizontal_lines import filter_horizontal_lines
 from cell_module.detect_table.filter_lines.ver_lines import filter_vertical_lines
+from my_utils.line_helper import crop_ver_and_hor_lines
 from my_utils.path_helper import path_images
 
 IMAGES_PATH = path_images()
@@ -56,7 +57,7 @@ for k in range(1, 15):
 		# points = remove_outlier(points)
 		# draw line on image
 		img_lines = IMAGE.copy()
-		cropped_vertical_lines, cropped_horizontal_lines = helper.crop_ver_and_hor_lines(
+		cropped_vertical_lines, cropped_horizontal_lines = crop_ver_and_hor_lines(
 			vertical_lines_filtered,
 			horizontal_lines_filtered
 		)
