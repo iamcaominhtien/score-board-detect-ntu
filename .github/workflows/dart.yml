@@ -20,17 +20,15 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - uses: actions/checkout@v2
-    - uses: actions/checkout@v1
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
-    - uses: subosito/flutter-action@v1
+    - uses: subosito/flutter-action@v2
       with:
           channel: 'stable'
-    - run: |
-#        cd score_board_detect_ntu
-        flutter pub get
+    - run: flutter pub get
     - name: Build
       run: |
         cd score_board_detect_ntu
