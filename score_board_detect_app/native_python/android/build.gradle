@@ -1,0 +1,104 @@
+group 'com.example.native_python'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext {
+        agp_version = '7.4.0'
+    }
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://chaquo.com/maven" }
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$agp_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.chaquo.python:gradle:14.0.2"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.chaquo.python'
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.example.native_python'
+    }
+
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+
+        ndk.abiFilters 'armeabi-v7a','arm64-v8a'
+
+        python {
+            version "3.8"
+        }
+
+        python {
+            buildPython "D:\\dev\\anaconda\\envs\\tflite_android\\python.exe"
+        }
+
+        python{
+            pip{
+                install "tflite-runtime"
+                install "opencv-python"
+                install "scikit-image"
+            }
+        }
+
+        python {
+            extractPackages "module"
+        }
+    }
+
+    sourceSets {
+        main {
+            setRoot "src/main"
+//            python.srcDir "src/main/python"
+            python.srcDirs = ["src/main/python", "src/main/python/model/trained_model/tflite"]
+        }
+    }
+
+    dependencies {
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.mockito:mockito-core:5.0.0'
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}
