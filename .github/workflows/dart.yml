@@ -29,7 +29,7 @@ jobs:
       with:
           channel: 'stable'
     - run: |
-        cd score_board_detect_ntu
+#        cd score_board_detect_ntu
         flutter pub get
     - name: Build
       run: |
