@@ -73,6 +73,7 @@ android {
             proc.waitFor()
 
             def pythonPaths = proc.in.text.split(System.getProperty("line.separator"))
+            print("Python paths: $pythonPaths")
             def python38Path = ''
             for (path in pythonPaths) {
                 try {
