@@ -36,13 +36,6 @@ jobs:
     - run: |
         cd score_board_detect_app
         flutter pub get
-        cd android
-        ls -la
-        ./gradlew signingReport
-#    - run: |
-#        cd score_board_detect_app/android
-#        # print the ./gradlew signingReport
-#        ./gradlew signingReport
 #    - name: Check if SECRET_PASSPHRASE is loaded
 #      run: |
 #        if [[ -z "${{ secrets.SECRET_PASSPHRASE }}" ]]; then
@@ -51,15 +44,18 @@ jobs:
 #        else
 #          echo "SECRET_PASSPHRASE is loaded successfully"
 #        fi
-#    - name: Build
-#      run: |
-#        cd score_board_detect_app
-#        gpg --quiet --batch --yes --decrypt --passphrase="${{secrets.SECRET_PASSPHRASE}}" \
-#        --output android/app/google-services.json android/app/google-services.json.gpg
-#        flutter build appbundle
-#        flutter build apk
-#    - name: Upload
-#      uses: actions/upload-artifact@master
-#      with:
-#        name: apk-build
-#        path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
+    - name: Build
+      run: |
+        cd score_board_detect_app
+        gpg --quiet --batch --yes --decrypt --passphrase="${{secrets.SECRET_PASSPHRASE}}" \
+        --output android/app/google-services.json android/app/google-services.json.gpg
+        flutter build appbundle
+        flutter build apk
+        # print the sha256 checksum of the apk
+        sha256sum build/app/outputs/flutter-apk/app-release.apk
+        cat build/app/outputs/flutter-apk/app-release.apk.sha1
+    - name: Upload
+      uses: actions/upload-artifact@master
+      with:
+        name: apk-build
+        path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
