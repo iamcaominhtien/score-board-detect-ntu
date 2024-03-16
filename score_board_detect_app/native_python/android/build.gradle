@@ -54,18 +54,50 @@ android {
     defaultConfig {
         minSdkVersion 21
 
-        ndk.abiFilters 'armeabi-v7a','arm64-v8a'
+        ndk.abiFilters 'armeabi-v7a', 'arm64-v8a'
 
         python {
             version "3.8"
         }
 
         python {
-            buildPython "D:\\dev\\anaconda\\envs\\tflite_android\\python.exe"
+            // The path to the Python interpreter to use for building the app.
+            //buildPython "D:\\dev\\anaconda\\envs\\tflite_android\\python.exe"
+            def pythonPath = 'python3.8'
+            def command = 'which'
+            if (System.properties['os.name'].toLowerCase().contains('windows')) {
+                pythonPath = 'python'
+                command = 'where'
+            }
+            def proc = "$command $pythonPath".execute()
+            proc.waitFor()
+
+            def pythonPaths = proc.in.text.split(System.getProperty("line.separator"))
+            def python38Path = ''
+            for (path in pythonPaths) {
+                try {
+                    def versionProc = "$path --version".execute()
+                    versionProc.waitFor()
+                    def check_result = versionProc.in.text
+                    if (check_result.contains("3.8")) {
+                        println("Python 3.8 interpreter found at path: $path")
+                        python38Path = path
+                        break
+                    }
+                } catch (Exception e) {
+                    println("An error occurred while checking Python version at path: $path. Error: ${e.message}")
+                }
+            }
+
+            if (python38Path == '') {
+                throw new GradleException("Python 3.8 interpreter not found")
+            }
+
+            buildPython python38Path.trim()
         }
 
-        python{
-            pip{
+        python {
+            pip {
                 install "tflite-runtime"
                 install "opencv-python"
                 install "scikit-image"
@@ -95,9 +127,9 @@ android {
             useJUnitPlatform()
 
             testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
             }
         }
     }
