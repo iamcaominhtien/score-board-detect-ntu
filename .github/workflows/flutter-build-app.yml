@@ -8,8 +8,8 @@ name: Score board detect mobile app
 on:
   push:
     branches: [ "main" ]
-    # paths:
-      # - "score_board_detect_app/**"
+    paths:
+      - "score_board_detect_app/**"
 
 jobs:
   build_and_deploy:
