@@ -1,0 +1,54 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Score board detect mobile app
+
+on:
+  push:
+    branches: [ "main" ]
+    # paths:
+      # - "score_board_detect_app/**"
+
+jobs:
+  build_and_deploy:
+    name: Build and Deploy
+    env:
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: |
+          cd score_board_detect_app
+          flutter pub get
+      #    - name: Check if SECRET_PASSPHRASE is loaded
+      #      run: |
+      #        if [[ -z "${{ secrets.SECRET_PASSPHRASE }}" ]]; then
+      #          echo "SECRET_PASSPHRASE is not loaded"
+      #          exit 1
+      #        else
+      #          echo "SECRET_PASSPHRASE is loaded successfully"
+      #        fi
+      - name: Build
+        run: |
+           cd score_board_detect_app
+           gpg --quiet --batch --yes --decrypt --passphrase="${{secrets.SECRET_PASSPHRASE}}" \
+           --output android/app/google-services.json android/app/google-services.json.gpg
+           # flutter build appbundle
+           flutter build apk
+      - name: Upload
+        uses: actions/upload-artifact@master
+        with:
+          name: score-board-detect-ntu-app
+          path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
