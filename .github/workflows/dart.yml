@@ -37,6 +37,7 @@ jobs:
         cd score_board_detect_app
         flutter pub get
         cd android
+        ls -la
         ./gradlew signingReport
 #    - run: |
 #        cd score_board_detect_app/android
