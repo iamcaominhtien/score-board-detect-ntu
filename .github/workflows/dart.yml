@@ -30,16 +30,18 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-#    - uses: subosito/flutter-action@v2
-#      with:
-#          channel: 'stable'
+    - uses: subosito/flutter-action@v2
+      with:
+          channel: 'stable'
     - run: |
-        cd score_board_detect_app/android
-        # print the ./gradlew signingReport
+        cd score_board_detect_app
+        flutter pub get
+        cd android
         ./gradlew signingReport
 #    - run: |
-#        cd score_board_detect_app
-#        flutter pub get
+#        cd score_board_detect_app/android
+#        # print the ./gradlew signingReport
+#        ./gradlew signingReport
 #    - name: Check if SECRET_PASSPHRASE is loaded
 #      run: |
 #        if [[ -z "${{ secrets.SECRET_PASSPHRASE }}" ]]; then
