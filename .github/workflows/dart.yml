@@ -55,4 +55,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: apk-build
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
