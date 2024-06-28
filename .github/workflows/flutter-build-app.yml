@@ -8,8 +8,8 @@ name: Score board detect mobile app
 on:
   push:
     branches: [ "test" ]
-    paths:
-      - "score_board_detect_app/**"
+#    paths:
+#      - "score_board_detect_app/**"
 
 permissions: write-all
 
