@@ -8,8 +8,10 @@ name: Score board detect mobile app
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "score_board_detect_app/**"
+#    paths:
+#      - "score_board_detect_app/**"
+
+permissions: write-all
 
 jobs:
   build_and_deploy:
@@ -47,8 +49,36 @@ jobs:
            --output android/app/google-services.json android/app/google-services.json.gpg
            # flutter build appbundle
            flutter build apk
-      - name: Upload
+      - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: score-board-detect-ntu-app
           path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Calculate version numbers
+        id: calc_version
+        run: |
+          echo "version_major=$((${{ github.run_number }} / 10))" >> $GITHUB_ENV
+          echo "version_minor=$((${{ github.run_number }} % 10))" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-v1.${{ env.version_major }}.${{ env.version_minor }}
+          release_name: score-board-detect-ntu v1.${{ env.version_major }}.${{ env.version_minor }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: score_board_detect_app/build/app/outputs/flutter-apk/app-release.apk
+          asset_name: sbd.apk
+          asset_content_type: application/vnd.android.package-archive
